@@ -15,7 +15,7 @@
         <?php tdy_se_pagination_bar( $loop ); ?>
     </nav>
 
-    <h1> Photo Albums </h1>
+    <h1> Events </h1>
 
 		<?php 
 			if($loop->have_posts()) : while($loop->have_posts()) : $loop->the_post(); 

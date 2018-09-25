@@ -1,5 +1,5 @@
 === Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
+Contributors: kahenvay
 Donate link: https://tredny.com
 Tags: comments, spam
 Requires at least: 3.0.1
@@ -18,9 +18,11 @@ This section describes how to install the plugin and get it working.
 
 e.g.
 
-1. Upload `tdy-pa.php` to the `/wp-content/plugins/` directory
-1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('plugin_name_hook'); ?>` in your templates
+1. Upload `Trednt Events` to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. Add and customise events by clicking on Events in the admin menu, then "Add new"
+4. View the event post directly as a normal post on clicking on view post
+5. List events on any page through the page events block
 
 == Frequently Asked Questions ==
 
@@ -41,8 +43,10 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 
 = 0.1 =
 * Can add photos to albums and visit single pages
-*	Todos : - Blocks
-						- Upcoming
-						- Past
+*	Todos : - Page Block
+						- 3rd option, Both (past and upcoming) with swtich
+							- Finish Endpoint ( get params and return proprer events )
+							- Finish Preview ( show gotten events in preview)
+					- Editor Block
 					- Base css
 					- Advanced-ish css

@@ -30,7 +30,7 @@
  */
 
 function imagePreviewHtml(src) {
-	return '<div id="upload_photos_preview" class="tdy-se-upload-preview">' +
+	return '<div id="upload_photos_preview" class="vl-upload-preview">' +
 
 		'<img style="max-width: 150px; object-fit: contain;" src="' + src + '" />' +
 		'</div>'
@@ -47,7 +47,7 @@ $(function() {
 		imgContainer = $('#upload_photos_preview'),
 		imgIdInput = $('#_tdy_se_photo_meta'),
 		// imgPreview = $('#upload_photos_preview'),
-		imgDelButton = $('#tdy-se-delete_photos_button');
+		imgDelButton = $('#vl-delete_photos_button');
 
 	// wp.media add Image
 	imgUploadButton.on('click', function(event) {
@@ -62,9 +62,9 @@ $(function() {
 
 		// Create a new media frame
 		frame = wp.media({
-			title: 'Select or Upload Media for your Photo Album',
+			title: 'Select or Upload Media for your Event',
 			button: {
-				text: 'Use as my Photos'
+				text: 'Use as my Event Photo'
 			},
 			multiple: false // Set to true to allow multiple files to be selected
 		});
@@ -94,14 +94,14 @@ $(function() {
 			console.log('attachment', attachment);
 
 			// Delete old previews
-			$('.tdy-se-upload-preview').remove();
+			$('.vl-upload-preview').remove();
 
 			// Initialse src array to retrun to the input and save
 			var srcArray = [];
 
 			// Create image previews for each attachments found and fill are src array
 			for (var i = 0; i < attachment.length; i++) {
-				$('.tdy-se-upload-wrapper').append(imagePreviewHtml(attachment[i].url));
+				$('.vl-upload-wrapper').append(imagePreviewHtml(attachment[i].url));
 				var img = {
 					id: attachment[i].id,
 					src: attachment[i].url,
@@ -144,7 +144,7 @@ $(function() {
 	// Erase image url and age preview
 	imgDelButton.on('click', function(e) {
 		e.preventDefault();
-		$('.tdy-se-upload-preview').remove();
+		$('.vl-upload-preview').remove();
 		imgIdInput.val('');
 	});
 
