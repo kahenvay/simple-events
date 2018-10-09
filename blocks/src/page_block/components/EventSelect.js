@@ -47,9 +47,7 @@ export class EventSelect extends Component {
 				this.props.updateAttributes({
 					howManyEvents: this.state.howManyEvents
 				});
-
 			}
-
 		});
 
 	}
