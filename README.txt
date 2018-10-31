@@ -1,6 +1,6 @@
 === Plugin Name ===
-Contributors: kahenvay
-Donate link: https://tredny.com
+Contributors: ucoates
+Donate link: https://visual-legion.com
 Tags: comments, spam
 Requires at least: 3.0.1
 Tested up to: 3.4
@@ -45,8 +45,10 @@ directory take precedence. For example, `/assets/screenshot-1.png` would win ove
 * Can add photos to albums and visit single pages
 *	Todos : - Page Block
 						- 3rd option, Both (past and upcoming) with swtich
-							- Finish Endpoint ( get params and return proprer events )
+							- Finish Endpoint ( get params and return proprer events ) => DONE
 							- Finish Preview ( show gotten events in preview)
+						- Base css
+						- Make Timezone editable
 					- Editor Block
-					- Base css
-					- Advanced-ish css
+						- Base css
+						- Advanced-ish css

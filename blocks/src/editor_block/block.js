@@ -40,7 +40,7 @@ const {Button, /*TextControl, TextareaControl*/ } = wp.components;
  *                             registered; otherwise `undefined`.
  */
 
-registerBlockType('vl/editor', {
+registerBlockType('tdy-se/editor', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
 	title: __('Tredny Event Editor'), // Block title.
 	icon: 'menu', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
@@ -53,62 +53,74 @@ registerBlockType('vl/editor', {
 		tdy_se_start_date: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_start_date'
+			meta: 'tdy_se_start_date',
+			default: ''
 		},
 		tdy_se_end_date: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_end_date'
+			meta: 'tdy_se_end_date',
+			default: ''
 		},
 		tdy_se_location: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_location'
+			meta: 'tdy_se_location',
+			default: ''
 		},
 		tdy_se_main_title: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_main_title'
+			meta: 'tdy_se_main_title',
+			default: ''
 		},
 		tdy_se_main_description: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_main_description'
+			meta: 'tdy_se_main_description',
+			default: ''
 		},
 		tdy_se_sub_title: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_sub_title'
+			meta: 'tdy_se_sub_title',
+			default: ''
 		},
 		tdy_se_sub_description: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_sub_description'
+			meta: 'tdy_se_sub_description',
+			default: ''
 		},
 		tdy_se_third_description: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_third_description'
+			meta: 'tdy_se_third_description',
+			default: ''
 		},
 		tdy_se_photo_url: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_photo_url'
+			meta: 'tdy_se_photo_url',
+			default: ''
 		},
 		tdy_se_photo_alt: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_photo_alt'
+			meta: 'tdy_se_photo_alt',
+			default: ''
 		},
 		tdy_se_photo_id: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_photo_id'
+			meta: 'tdy_se_photo_id',
+			default: ''
 		},
 		tdy_se_youtube_url: {
 			type: 'string',
 			source: 'meta',
-			meta: 'tdy_se_youtube_url'
+			meta: 'tdy_se_youtube_url',
+			default: ''
 		},
 
 
@@ -146,6 +158,7 @@ registerBlockType('vl/editor', {
 		};
 
 		const onMediaSelect = (media) => {
+			console.log('selected media', media);
 			setAttributes({
 				tdy_se_photo_alt: media.alt,
 				tdy_se_photo_url: media.url
@@ -156,14 +169,14 @@ registerBlockType('vl/editor', {
 		const handleMainDescriptionChange = (content) => {
 			setAttributes({
 				// tdy_se_main_description: JSON.stringify(content)
-				tdy_se_main_description: content[0]
+				tdy_se_main_description: content
 			})
 		}
 
 		const handleSubDescriptionChange = (content) => {
 			setAttributes({
 				// tdy_se_main_description: JSON.stringify(content)
-				tdy_se_sub_description: content[0]
+				tdy_se_sub_description: content
 			})
 		}
 
@@ -174,14 +187,28 @@ registerBlockType('vl/editor', {
 			<div className={ props.className }>
      <h2> Event Details </h2>
      <MediaUpload onSelect={ onMediaSelect } type="image" value={ tdy_se_photo_id } render={ ({open}) => getImageButton(open) } />
+     <Flatpickr className={ "flatpickr" } data-enable-time value={ tdy_se_start_date } options={ { altInput: true, altFormat: "d/m/Y H:i", dateFormat: "c", time_24hr: true } } onChange={ date => {
+                                                                                                                                                                                           	console.log(date);
+                                                                                                                                                                                           	setAttributes({
+                                                                                                                                                                                           		tdy_se_start_date: date[0]
+                                                                                                                                                                                           	})
+                                                                                                                                                                                           } } />
+     <Flatpickr className={ "flatpickr" } data-enable-time value={ tdy_se_end_date } options={ { altInput: true, altFormat: "d/m/Y H:i", dateFormat: "c", time_24hr: true, minDate: tdy_se_start_date } } onChange={ date => {
+                                                                                                                                                                                                                     	console.log(date);
+                                                                                                                                                                                                                     	setAttributes({
+                                                                                                                                                                                                                     		tdy_se_end_date: date[0]
+                                                                                                                                                                                                                     	})
+                                                                                                                                                                                                                     } } />
      <PlainText onChange={ content => setAttributes({
                            	tdy_se_main_title: content
                            }) } value={ tdy_se_main_title } placeholder="Primary title for the event..." className="heading" />
-     <RichText label="Text" help="Enter some text" value={ tdy_se_main_description } placeholder="Primary description about the event..." onChange={ handleMainDescriptionChange } />
-     <RichText label="Text" help="Enter some text" value={ tdy_se_sub_description } placeholder="Sencondary description about the event..." onChange={ handleSubDescriptionChange } />
+     <RichText keepPlaceholderOnFocus="true" label="Text" help="Enter some text" value={ tdy_se_main_description } placeholder="Primary description about the event..." onChange={ handleMainDescriptionChange }
+     />
      <PlainText onChange={ content => setAttributes({
                            	tdy_se_sub_title: content
                            }) } value={ tdy_se_sub_title } placeholder="Sencondary title for the event..." />
+     <RichText keepPlaceholderOnFocus="true" label="Text" help="Enter some text" value={ tdy_se_sub_description } placeholder="Sencondary description about the event..." onChange={ handleSubDescriptionChange }
+     />
    </div>
 			);
 	},

@@ -99,7 +99,7 @@ function tdy_se_custom_post_type() {
 		  	array( 'tdy-se/editor' ), array( TDY_PA_PAGE_BLOCK )
 		  );
 		} else {
-			$template_array = array('tdy-se/editor');
+			$template_array = array(array('tdy-se/editor'));
 		}
 
 		// // print_r($template_array);
@@ -133,6 +133,38 @@ function tdy_se_custom_post_type() {
 
 	}
 add_action( 'init', 'tdy_se_custom_post_type' );
+
+add_filter('single_template', 'tdy_se_my_custom_template');
+function tdy_se_my_custom_template($single) {
+
+    global $post;
+
+    /* Checks for single template by post type */
+    if ( $post->post_type == 'tdy_events' ) {
+        if ( file_exists( __DIR__ . '/public/partials/single-tdy_events.php' ) ) {
+            return __DIR__ . '/public/partials/single-tdy_events.php';
+        }
+    }
+
+    return $single;
+
+}
+
+add_filter( 'archive_template', 'tdy_se_get_custom_post_type_template' ) ;
+function tdy_se_get_custom_post_type_template($archive) {
+
+    global $post;
+
+    /* Checks for archive template by post type */
+    if ( $post->post_type == 'tdy_events' ) {
+        if ( file_exists( __DIR__ . '/public/partials/archive-tdy_events.php' ) ) {
+            return __DIR__ . '/public/partials/archive-tdy_events.php';
+        }
+    }
+
+    return $archive;
+
+}
 
 // add_filter( 'gutenberg_can_edit_post_type', function( $can_edit, $post_type ){
 //     if ( $can_edit && 'tdy_events' === $post_type ) {
@@ -234,7 +266,18 @@ function tdy_se_pagination_bar( $custom_query ) {
     }
 }
 
+/**
+* Adding shared css
+*/
 
+function tdy_se_adding_shared_style() {
+ 
+wp_enqueue_style('tdy_se_shared_stlye', plugins_url('shared/shared.css', __FILE__), array(),'1.1', 'all');
+ 
+}
+  
+add_action( 'wp_enqueue_scripts', 'tdy_se_adding_shared_style' ); 
+add_action( 'admin_enqueue_scripts', 'tdy_se_adding_shared_style' );
 
 
 /**
@@ -325,7 +368,7 @@ function tdy_se_my_register_editor() {
 
 	  // register_meta( 'post', 'location', array(
 	  //       'show_in_rest' => true,
-	  //   ) );
+	  //   ) ); 
 	}
 } 
 

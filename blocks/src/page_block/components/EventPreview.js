@@ -42,6 +42,7 @@ export class EventPreview extends Component {
 
 		console.log('setStatus props', props);
 
+		// useless if else? refactor to just if later today
 		if (props.pastOrUpcoming && props.howManyEvents) {
 
 			this.setState({
@@ -84,7 +85,7 @@ export class EventPreview extends Component {
 	render() {
 		return (
 			<div className="EventPreview tdy_photo_album
-                                                                                          tdy_photo_gallery">
+                                                                                             tdy_photo_gallery">
    </div>
 		)
 	}

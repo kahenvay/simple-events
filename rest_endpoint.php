@@ -3,39 +3,39 @@
 /**
 * Add meta
 */
-// if(!function_exists('tdy_se_add_query_meta')) {
-//   function tdy_se_add_query_meta($wp_query = "") {
+if(!function_exists('tdy_se_add_query_meta')) {
+  function tdy_se_add_query_meta($wp_query = "") {
 
-//       //return In case if wp_query is empty or postmeta already exist
-//       if( (empty($wp_query)) || (!empty($wp_query) && !empty($wp_query->posts) && isset($wp_query->posts[0]->postmeta)) ) { return $wp_query; }
+      //return In case if wp_query is empty or postmeta already exist
+      if( (empty($wp_query)) || (!empty($wp_query) && !empty($wp_query->posts) && isset($wp_query->posts[0]->postmeta)) ) { return $wp_query; }
 
-//       $sql = $postmeta = '';
-//       $post_ids = array();
-//       $post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
-//       if(!empty($post_ids)) {
-//         global $wpdb;
-//         $post_ids = implode(',', $post_ids);
-//         $sql = "SELECT meta_key, meta_value, post_id FROM $wpdb->postmeta WHERE post_id IN ($post_ids)";
-//         $postmeta = $wpdb->get_results($sql, OBJECT);
-//         if(!empty($postmeta)) {
-//           foreach($wp_query->posts as $pKey => $pVal) {
-//             $wp_query->posts[$pKey]->postmeta = new StdClass();
-//             foreach($postmeta as $mKey => $mVal) {
-//               if($postmeta[$mKey]->post_id == $wp_query->posts[$pKey]->ID) {
-//                 $newmeta[$mKey] = new stdClass();
-//                 $newmeta[$mKey]->meta_key = $postmeta[$mKey]->meta_key;
-//                 $newmeta[$mKey]->meta_value = maybe_unserialize($postmeta[$mKey]->meta_value);
-//                 $wp_query->posts[$pKey]->postmeta = (array) array_merge((array) $wp_query->posts[$pKey]->postmeta, (array) $newmeta);
-//                 unset($newmeta);
-//               }
-//             }
-//           }
-//         }
-//         unset($post_ids); unset($sql); unset($postmeta);
-//       }
-//       return $wp_query;
-//   }
-// }
+      $sql = $postmeta = '';
+      $post_ids = array();
+      $post_ids = wp_list_pluck( $wp_query->posts, 'ID' );
+      if(!empty($post_ids)) {
+        global $wpdb;
+        $post_ids = implode(',', $post_ids);
+        $sql = "SELECT meta_key, meta_value, post_id FROM $wpdb->postmeta WHERE post_id IN ($post_ids)";
+        $postmeta = $wpdb->get_results($sql, OBJECT);
+        if(!empty($postmeta)) {
+          foreach($wp_query->posts as $pKey => $pVal) {
+            $wp_query->posts[$pKey]->postmeta = new StdClass();
+            foreach($postmeta as $mKey => $mVal) {
+              if($postmeta[$mKey]->post_id == $wp_query->posts[$pKey]->ID) {
+                $newmeta[$mKey] = new stdClass();
+                $newmeta[$mKey]->meta_key = $postmeta[$mKey]->meta_key;
+                $newmeta[$mKey]->meta_value = maybe_unserialize($postmeta[$mKey]->meta_value);
+                $wp_query->posts[$pKey]->postmeta = (array) array_merge((array) $wp_query->posts[$pKey]->postmeta, (array) $newmeta);
+                unset($newmeta);
+              }
+            }
+          }
+        }
+        unset($post_ids); unset($sql); unset($postmeta);
+      }
+      return $wp_query;
+  }
+}
 
 class My_Rest_Server extends WP_REST_Controller {
  
@@ -107,19 +107,19 @@ class My_Rest_Server extends WP_REST_Controller {
   		$howManyEvents = $params['howManyEvents'];
   	}
 
-	  $today = date('Ymd');
+	  $today = date('c');
 
 		$args = array(
 		    'post_type' => 'tdy_events',
 		    'posts_per_page' => $howManyEvents,
-		    'meta_key' => '_tdy_se_date_meta',
+		    'meta_key' => 'tdy_se_start_date',
 		    'orderby'           => 'meta_value_num',
 		    'meta_query' => array(
 		        array(
-		            'key' => '_tdy_se_date_meta'
+		            'key' => 'tdy_se_start_date'
 		        ),
 		        array(
-		            'key' => '_tdy_se_date_meta',
+		            'key' => 'tdy_se_start_date',
 		            'value' => $today,
 		            'compare' => $pastOrUpcoming
 		        )
@@ -135,8 +135,8 @@ class My_Rest_Server extends WP_REST_Controller {
 	    return new WP_Error( 'no_events', 'Couldn\'t find any upcoming events', array( 'status' => 404 ) );
 	  }
 
-		return $upcoming_events_querry->posts;
-		// return tdy_se_add_query_meta($upcoming_events_querry)->posts;
+		// return $upcoming_events_querry->posts;
+		return tdy_se_add_query_meta($upcoming_events_querry)->posts;
 		// return $type;
 	}
  

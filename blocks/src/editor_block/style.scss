@@ -743,7 +743,7 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-input{
-	&.readonly, &[readonly], &.readonly, &[readonly]{
-		background-color:#fff;
-	}
+  &.readonly, &[readonly], &.readonly, &[readonly]{
+    background-color:#fff;
+  }
 }
